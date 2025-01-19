@@ -1,3 +1,15 @@
+/**
+ * Root layout component for the Next.js application.
+ * Provides global configuration and metadata.
+ *
+ * Features:
+ * - SEO metadata configuration
+ * - Favicon and apple-touch-icon setup
+ * - Viewport configuration
+ * - Language setting (pt-BR)
+ * - Global CSS imports
+ */
+
 import type { Metadata } from "next";
 import "./globals.css";
 
