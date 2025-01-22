@@ -63,12 +63,6 @@ export default function Home() {
     const value = inputRef.current?.value?.trim();
     if (!value || isAdding) return;
 
-    const isValidInput = (input: string) => /^[a-zA-Z0-9\s]+$/.test(input);
-    if (!isValidInput(value)) {
-      alert("Entrada inválida. Use apenas letras, números e espaços.");
-      return;
-    }
-
     const truncatedValue = value.length > 70 ? value.slice(0, 70) : value;
 
     if (
