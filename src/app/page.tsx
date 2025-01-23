@@ -1,107 +1,109 @@
-/**
- * Main page component for the Shopping List application.
- * Implements a responsive interface for managing shopping list items.
- *
- * Key Features:
- * - Real-time item management (add/remove)
- * - Input validation
- * - Loading state handling
- * - Duplicate item prevention
- * - Character limit enforcement (70 chars)
- * - Case-insensitive item comparison
- *
- * State Management:
- * - items: Array of shopping list items
- * - isAdding: Loading state for item addition
- * - isLoading: Initial data fetching state
- *
- * Error Handling:
- * - Input validation for alphanumeric characters and spaces
- * - Error messaging for duplicates and invalid inputs
- * - API error catch blocks with console logging
- */
-
 "use client";
 
-import { addItem, getItems, removeItem } from "@/db";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { Client } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+import { addItem, getItems, removeItem } from "./actions";
 
 export default function Home() {
+  const API_BASE_URL = process.env.NEXT_PUBLIC_RENDER_WEB_APP_API_BASE_URL;
   const inputRef = useRef<HTMLInputElement | null>(null);
+
   const [items, setItems] = useState<{ id: string; value: string }[]>([]);
   const [isAdding, setIsAdding] = useState(false);
-
-  // Loading state to prevent hydration mismatch
   const [isLoading, setIsLoading] = useState(true);
 
+  const formatItem = useCallback((itemValue: string) => {
+    return itemValue.charAt(0).toUpperCase() + itemValue.slice(1);
+  }, []);
+
+  const clearInputField = useCallback(() => {
+    if (inputRef.current) inputRef.current.value = "";
+  }, []);
+
   useEffect(() => {
-    const fetchItems = async () => {
+    let client: Client;
+
+    const initializeConnection = async () => {
       try {
-        const fetchedItems = await getItems();
-        setItems(fetchedItems);
+        const initialItems = await getItems();
+        setItems(initialItems);
+        setIsLoading(false);
+
+        const socket = new SockJS(`${API_BASE_URL}/ws`);
+        client = new Client({
+          webSocketFactory: () => socket,
+          onConnect: () => {
+            console.log("Connected to WebSocket");
+
+            client.subscribe("/topic/shopping-list", (message) => {
+              const updatedList = JSON.parse(message.body);
+              setItems(updatedList);
+            });
+          },
+          onDisconnect: () => {
+            console.log("Disconnected from WebSocket");
+          },
+          onStompError: (frame) => {
+            console.error("Broker reported error: " + frame.headers["message"]);
+            console.error("Additional details: " + frame.body);
+          },
+        });
+
+        client.activate();
       } catch (error) {
-        console.error("Erro ao buscar itens:", error);
-      } finally {
+        console.error("Error initializing connection:", error);
         setIsLoading(false);
       }
     };
 
-    fetchItems();
-  }, []);
+    initializeConnection();
 
-  const clearInputField = () => {
-    if (inputRef.current) inputRef.current.value = "";
-  };
+    return () => {
+      if (client) {
+        client.deactivate();
+      }
+    };
+  }, [API_BASE_URL]);
 
-  const formatItem = (itemValue: string) => {
-    return itemValue.charAt(0).toUpperCase() + itemValue.slice(1);
-  };
-
-  const addToList = async () => {
+  const addToList = useCallback(async () => {
     const value = inputRef.current?.value?.trim();
     if (!value || isAdding) return;
 
-    const truncatedValue = value.length > 70 ? value.slice(0, 70) : value;
-
-    if (
-      items.some(
-        (item) => item.value.toLowerCase() === truncatedValue.toLowerCase()
-      )
-    ) {
-      alert("Este item já está presente na lista!");
-      return;
-    }
-
     setIsAdding(true);
+    const formattedValue = formatItem(value);
 
     try {
-      const formattedValue = formatItem(truncatedValue);
-      const itemId = await addItem(formattedValue);
-      setItems((prevItems) => [
-        ...prevItems,
-        { id: itemId, value: formattedValue },
-      ]);
+      await addItem(formattedValue);
       clearInputField();
     } catch (error) {
-      console.error("Erro ao adicionar item:", error);
+      console.error("Error adding item:", error);
     } finally {
       setIsAdding(false);
     }
-  };
+  }, [isAdding, formatItem, clearInputField]);
 
-  const handleRemoveItem = async (itemId: string | null) => {
+  const handleRemoveItem = useCallback(async (itemId: string | null) => {
     if (!itemId) return;
+
     try {
       await removeItem(itemId);
-      setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
     } catch (error) {
-      console.error("Erro ao remover item:", error);
+      console.error("Error removing item:", error);
     }
-  };
+  }, []);
 
-  // Show loading state
+  const handleKeyPress = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === "Enter") {
+        addToList();
+      }
+    },
+    [addToList]
+  );
+
   if (isLoading) {
     return <div className={styles.container}>Carregando...</div>;
   }
@@ -111,7 +113,7 @@ export default function Home() {
       <div style={{ position: "relative", width: "260px", height: "260px" }}>
         <Image
           src="/blue-cat-chef.png"
-          alt="Um gato azul com chapéu de Master Chef."
+          alt="A blue cat with a Master Chef hat."
           fill
           style={{ objectFit: "contain" }}
           priority
@@ -121,15 +123,16 @@ export default function Home() {
         ref={inputRef}
         className={styles.inputSection}
         type="text"
-        placeholder="Nome do item"
+        placeholder="Item name"
+        onKeyPress={handleKeyPress}
       />
       <button
         onClick={addToList}
         className={styles.addButton}
         disabled={isAdding}
-        aria-label="Adicionar item à lista"
+        aria-label="Add item to list"
       >
-        {isAdding ? "Adicionando..." : "Adicionar à lista"}
+        {isAdding ? "Adding..." : "Add to list"}
       </button>
       <ul className={styles.list}>
         {items.map(({ id, value }) => (

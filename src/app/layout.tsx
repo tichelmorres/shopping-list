@@ -1,15 +1,3 @@
-/**
- * Root layout component for the Next.js application.
- * Provides global configuration and metadata.
- *
- * Features:
- * - SEO metadata configuration
- * - Favicon and apple-touch-icon setup
- * - Viewport configuration
- * - Language setting (pt-BR)
- * - Global CSS imports
- */
-
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -24,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR">
       <head>
         <title>Lista de Compras</title>
         <link
@@ -47,7 +35,7 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body suppressHydrationWarning>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
