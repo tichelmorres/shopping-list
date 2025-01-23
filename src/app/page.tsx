@@ -113,7 +113,7 @@ export default function Home() {
       <div style={{ position: "relative", width: "260px", height: "260px" }}>
         <Image
           src="/blue-cat-chef.png"
-          alt="A blue cat with a Master Chef hat."
+          alt="Um gato azul com chapéu de Master Chef."
           fill
           style={{ objectFit: "contain" }}
           priority
@@ -123,16 +123,16 @@ export default function Home() {
         ref={inputRef}
         className={styles.inputSection}
         type="text"
-        placeholder="Item name"
+        placeholder="Nome do item"
         onKeyPress={handleKeyPress}
       />
       <button
         onClick={addToList}
         className={styles.addButton}
         disabled={isAdding}
-        aria-label="Add item to list"
+        aria-label="Adicionar item à lista"
       >
-        {isAdding ? "Adding..." : "Add to list"}
+        {isAdding ? "Adicionando..." : "Adicionar à lista"}
       </button>
       <ul className={styles.list}>
         {items.map(({ id, value }) => (
