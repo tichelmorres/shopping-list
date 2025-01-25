@@ -1,0 +1,35 @@
+.list {
+  max-width: 88%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  gap: 4px;
+  list-style-type: none;
+  align-content: space-around;
+  align-items: center;
+  justify-content: center;
+}
+
+.itemSlot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff;
+  color: #212121;
+  border-radius: 8px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+  margin: 4px;
+  border: 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+.itemSlot:hover {
+  background-color: #eae8e8;
+}
+
+.item {
+  flex-grow: 1;
+  margin: 0 10px;
+  font-size: 18px;
+}

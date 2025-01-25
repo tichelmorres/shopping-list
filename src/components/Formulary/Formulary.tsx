@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
-import styles from "@/app/page.module.css";
-import { addItem } from "@/app/actions";
+import styles from "./formulary.module.css";
+import { addItem } from "@/app/actions/db";
 
 export function ShoppingListForm() {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -19,7 +19,7 @@ export function ShoppingListForm() {
       await addItem(formattedValue);
       if (inputRef.current) inputRef.current.value = "";
     } catch (error) {
-      console.error("Error adding item:", error);
+      console.error("Erro adicionando item:", error);
     } finally {
       setIsAdding(false);
     }

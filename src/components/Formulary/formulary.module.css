@@ -1,0 +1,33 @@
+.inputSection,
+.addButton {
+  width: 300px;
+  height: 50px;
+  text-align: center;
+  border: 0;
+  border-radius: 8px;
+  font-size: 20px;
+  box-sizing: border-box;
+}
+
+.inputSection {
+  background-color: #f5f3f3;
+  color: #212121;
+  margin-top: 18px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+}
+.inputSection:focus {
+  outline: none;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.addButton {
+  margin-top: 12px;
+  background-color: #3aa0d8;
+  color: #ffffff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+.addButton:hover {
+  background-color: #318bb6;
+  color: #e0f7ff;
+}

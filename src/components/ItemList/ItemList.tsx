@@ -1,8 +1,8 @@
 "use client";
 
-import styles from "@/app/page.module.css";
+import styles from "./itemList.module.css";
 import { useWebSocket } from "@/components/WebSocketContext/WebSocketContext";
-import { removeItem } from "@/app/actions";
+import { removeItem } from "@/app/actions/db";
 
 export function ItemList() {
   const { items } = useWebSocket();
@@ -13,7 +13,7 @@ export function ItemList() {
     try {
       await removeItem(itemId);
     } catch (error) {
-      console.error("Error removing item:", error);
+      console.error("Erro removendo item:", error);
     }
   };
 

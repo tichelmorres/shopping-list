@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import { getItems } from "@/app/actions";
+import { getItems } from "@/app/actions/db";
 
 type Item = {
   id: string;
