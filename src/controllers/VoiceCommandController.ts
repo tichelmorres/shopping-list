@@ -9,19 +9,17 @@ export async function processCommand(transcript: string) {
     normalizedTranscript.match(/(.+)\s+(?:ok|okay)/);
 
   const removeAllMatch = normalizedTranscript.match(
-    /limpar\s+(.+)\s+a\s+lista/
+    /remover\s+(?:todos\s+os\s+)?itens/
   );
 
   if (removeMatch) {
     const itemName = removeMatch[1].trim();
     if (itemName) {
-      // Remove quantity from the end of the item name
       const cleanItemName = itemName.replace(/\s+\d+$/, "").trim();
 
       const formattedItemName =
         cleanItemName.charAt(0).toUpperCase() + cleanItemName.slice(1);
 
-      // Fetch existing items and find the matching item's ID
       const items = await getItems();
       const itemToRemove = items.find((item) =>
         item.value.toLowerCase().startsWith(formattedItemName.toLowerCase())
@@ -54,7 +52,18 @@ export async function processCommand(transcript: string) {
       )
       .join(" ");
 
-    await addItem(formattedItemName);
-    console.log(`Item "${formattedItemName}" adicionado!`);
+    const items = await getItems();
+    const baseItemName = formattedItemName.replace(/\s+\d+$/, "").trim();
+    const itemExists = items.some((item) => {
+      const cleanItemValue = item.value.replace(/\s+\d+$/, "").trim();
+      return cleanItemValue.toLowerCase() === baseItemName.toLowerCase();
+    });
+
+    if (!itemExists) {
+      await addItem(formattedItemName);
+      console.log(`Item "${formattedItemName}" adicionado!`);
+    } else {
+      console.log(`Item similar a "${formattedItemName}" já existe.`);
+    }
   }
 }

@@ -2,7 +2,7 @@
 
 import { useRef, useState, useCallback } from "react";
 import styles from "./formulary.module.css";
-import { addItem } from "@/app/actions/db";
+import { addItem, getItems } from "@/app/actions/db";
 
 export function ShoppingListForm() {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -16,8 +16,19 @@ export function ShoppingListForm() {
     const formattedValue = value.charAt(0).toUpperCase() + value.slice(1);
 
     try {
-      await addItem(formattedValue);
-      if (inputRef.current) inputRef.current.value = "";
+      const items = await getItems();
+      const baseItemName = formattedValue.replace(/\s+\d+$/, "").trim();
+      const itemExists = items.some((item) => {
+        const cleanItemValue = item.value.replace(/\s+\d+$/, "").trim();
+        return cleanItemValue.toLowerCase() === baseItemName.toLowerCase();
+      });
+
+      if (!itemExists) {
+        await addItem(formattedValue);
+        if (inputRef.current) inputRef.current.value = "";
+      } else {
+        console.log(`Item similar a "${formattedValue}" já existe.`);
+      }
     } catch (error) {
       console.error("Erro adicionando item:", error);
     } finally {
