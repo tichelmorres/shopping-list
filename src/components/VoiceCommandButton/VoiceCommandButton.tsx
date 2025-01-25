@@ -5,7 +5,6 @@ import { processCommand } from "@/controllers/VoiceCommandController";
 
 export function VoiceCommandButton() {
   const handleVoiceCommand = async (transcript: string) => {
-    // Process voice command
     console.log("Comando reconhecido:", transcript);
     await processCommand(transcript);
   };

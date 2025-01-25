@@ -1,9 +1,9 @@
 import { addItem, removeItem, getItems } from "@/app/actions/db";
+import { convertNumberWord } from "@/services/numberWordMap";
 
 export async function processCommand(transcript: string) {
   const normalizedTranscript = transcript.toLowerCase();
 
-  // Regex to extract item names more robustly
   const removeMatch =
     normalizedTranscript.match(/remover\s+(.+)/) ||
     normalizedTranscript.match(/(.+)\s+(?:ok|okay)/);
@@ -31,12 +31,16 @@ export async function processCommand(transcript: string) {
       }
     }
   } else {
-    const itemName = transcript;
-    if (itemName) {
-      const formattedItemName =
-        itemName.charAt(0).toUpperCase() + itemName.slice(1);
-      await addItem(formattedItemName);
-      console.log(`Item "${formattedItemName}" adicionado!`);
-    }
+    const itemParts = transcript.toLowerCase().split(" ");
+    const processedItemParts = itemParts.map((word) => convertNumberWord(word));
+
+    const formattedItemName = processedItemParts
+      .map((part, index) =>
+        index === 0 ? part.charAt(0).toUpperCase() + part.slice(1) : part
+      )
+      .join(" ");
+
+    await addItem(formattedItemName);
+    console.log(`Item "${formattedItemName}" adicionado!`);
   }
 }
