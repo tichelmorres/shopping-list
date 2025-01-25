@@ -22,7 +22,7 @@ export function ItemList() {
     }
   };
 
-  const handleMouseDown = useCallback((itemId: string) => {
+  const handleTouchStart = useCallback((itemId: string) => {
     const timer = setTimeout(async () => {
       const allItems = await getItems();
       if (allItems.length > 0) {
@@ -36,7 +36,7 @@ export function ItemList() {
     setPressTimers((prev) => ({ ...prev, [itemId]: timer }));
   }, []);
 
-  const handleMouseUp = useCallback(
+  const handleTouchEnd = useCallback(
     (itemId: string) => {
       if (pressTimers[itemId]) {
         clearTimeout(pressTimers[itemId]);
@@ -56,9 +56,12 @@ export function ItemList() {
         <button
           key={id}
           onClick={() => handleRemoveItem(id)}
-          onMouseDown={() => handleMouseDown(id)}
-          onMouseUp={() => handleMouseUp(id)}
-          onMouseLeave={() => handleMouseUp(id)}
+          onMouseDown={() => handleTouchStart(id)}
+          onMouseUp={() => handleTouchEnd(id)}
+          onMouseLeave={() => handleTouchEnd(id)}
+          onTouchStart={() => handleTouchStart(id)}
+          onTouchEnd={() => handleTouchEnd(id)}
+          onTouchCancel={() => handleTouchEnd(id)}
           className={styles.itemSlot}
         >
           <li className={styles.item}>{value}</li>
