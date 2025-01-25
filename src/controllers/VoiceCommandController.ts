@@ -8,9 +8,7 @@ export async function processCommand(transcript: string) {
     normalizedTranscript.match(/remover\s+(.+)/) ||
     normalizedTranscript.match(/(.+)\s+(?:ok|okay)/);
 
-  const removeAllMatch = normalizedTranscript.match(
-    /remover\s+(?:todos\s+os\s+)?itens/
-  );
+  const removeAllMatch = normalizedTranscript.match(/limpar\s+a\s+lista/);
 
   if (removeMatch) {
     const itemName = removeMatch[1].trim();
@@ -38,7 +36,7 @@ export async function processCommand(transcript: string) {
       for (const item of items) {
         await removeItem(item.id);
       }
-      console.log("Todos os itens removidos!");
+      console.log("Lista limpa!");
     } else {
       console.log("Nenhum item para remover.");
     }
