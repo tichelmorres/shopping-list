@@ -8,6 +8,10 @@ export async function processCommand(transcript: string) {
     normalizedTranscript.match(/remover\s+(.+)/) ||
     normalizedTranscript.match(/(.+)\s+(?:ok|okay)/);
 
+  const removeAllMatch = normalizedTranscript.match(
+    /limpar\s+(.+)\s+a\s+lista/
+  );
+
   if (removeMatch) {
     const itemName = removeMatch[1].trim();
     if (itemName) {
@@ -29,6 +33,16 @@ export async function processCommand(transcript: string) {
       } else {
         console.log(`Item "${formattedItemName}" não encontrado.`);
       }
+    }
+  } else if (removeAllMatch) {
+    const items = await getItems();
+    if (items.length > 0) {
+      for (const item of items) {
+        await removeItem(item.id);
+      }
+      console.log("Todos os itens removidos!");
+    } else {
+      console.log("Nenhum item para remover.");
     }
   } else {
     const itemParts = transcript.toLowerCase().split(" ");
