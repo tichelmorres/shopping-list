@@ -1,23 +1,32 @@
 * {
-  padding: 0;
-  margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
 html {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  background-color: #fff9c9;
-  font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  user-select: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+	background-color: #fff9d9;
+	font-family:
+		"Lato",
+		-apple-system,
+		BlinkMacSystemFont,
+		"Segoe UI",
+		Roboto,
+		Oxygen-Sans,
+		Ubuntu,
+		Cantarell,
+		"Helvetica Neue",
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	user-select: none;
 }
 
 ::-webkit-scrollbar,
 ::-webkit-scrollbar-thumb,
 ::-webkit-search-cancel-button {
-  display: none;
+	display: none;
 }

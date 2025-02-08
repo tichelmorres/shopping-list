@@ -1,33 +1,48 @@
 .inputSection,
 .addButton {
-  width: 300px;
-  height: 50px;
-  text-align: center;
-  border: 0;
-  border-radius: 8px;
-  font-size: 20px;
-  box-sizing: border-box;
+	width: 300px;
+	height: 50px;
+	text-align: center;
+	border: 0;
+	border-radius: 12px;
+	font-size: 20px;
+	box-sizing: border-box;
+	transition: all 0.3s ease;
 }
 
 .inputSection {
-  background-color: #f5f3f3;
-  color: #212121;
-  margin-top: 18px;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+	background-color: rgba(255, 255, 255, 0.1);
+	color: #1c1c1c;
+	margin-top: 18px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(10px);
 }
+
 .inputSection:focus {
-  outline: none;
-  background-color: #ffffff;
-  color: #000000;
+	outline: none;
+	background-color: rgba(255, 255, 255, 0.15);
+	box-shadow: 0 4px 12px rgba(61, 184, 255, 0.2);
+}
+
+.inputSection::placeholder {
+	color: #7f7f7f;
 }
 
 .addButton {
-  margin-top: 12px;
-  background-color: #3aa0d8;
-  color: #ffffff;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+	margin-top: 12px;
+	background: linear-gradient(135deg, #3d89ff 0%, #2b62cc 100%);
+	color: #ffffff;
+	box-shadow: 0 4px 12px rgba(61, 137, 255, 0.2);
+	font-weight: 500;
 }
+
 .addButton:hover {
-  background-color: #318bb6;
-  color: #e0f7ff;
+	background: linear-gradient(135deg, #4b93ff 0%, #3370e0 100%);
+	transform: translateY(-1px);
+	box-shadow: 0 6px 16px rgba(61, 137, 255, 0.3);
+}
+
+.addButton:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
 }

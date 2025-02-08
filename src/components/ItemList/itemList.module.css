@@ -1,35 +1,41 @@
 .list {
-  max-width: 88%;
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 18px;
-  gap: 4px;
-  list-style-type: none;
-  align-content: space-around;
-  align-items: center;
-  justify-content: center;
+	max-width: 88%;
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 18px;
+	gap: 8px;
+	list-style-type: none;
+	align-content: space-around;
+	align-items: center;
+	justify-content: center;
 }
 
 .itemSlot {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #ffffff;
-  color: #212121;
-  border-radius: 8px;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
-  margin: 4px;
-  border: 0;
-  cursor: pointer;
-  font-size: 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 16px;
+	background: rgba(255, 255, 255, 0.08);
+	color: #2a2a2a;
+	border-radius: 12px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	margin: 4px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	cursor: pointer;
+	font-size: 16px;
+	transition: all 0.3s ease;
+	backdrop-filter: blur(10px);
 }
+
 .itemSlot:hover {
-  background-color: #eae8e8;
+	background: rgba(61, 137, 255, 0.15);
+	border-color: rgba(61, 137, 255, 0.3);
+	transform: translateY(-1px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .item {
-  flex-grow: 1;
-  margin: 0 10px;
-  font-size: 18px;
+	flex-grow: 1;
+	margin: 0 10px;
+	font-size: 18px;
 }
