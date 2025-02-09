@@ -1,23 +1,10 @@
 .container {
-	max-height: none;
-	height: auto;
+	max-width: 800px;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	margin: 10px auto;
-	padding: 20px 0;
-	font-family: "Lato", sans-serif;
-	overflow: hidden;
-	animation: fadeIn 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
+	margin: 20px auto;
+	padding: 20px;
 }
